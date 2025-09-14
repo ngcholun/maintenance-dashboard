@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ngong Ping Cable Car – Maintenance Dashboard</title>
+  <style>
+    body { font-family: Segoe UI, Calibri, sans-serif; margin:0; background:#f5f7fa; color:#333; }
+    header { text-align:center; padding:20px; background:#2c3e50; color:#fff; }
+    .dashboard{ padding:20px; max-width:1200px; margin:auto; }
+    .summary{ background:#ecf0f1; padding:10px; margin-bottom:15px; border-radius:6px;
+      display:flex; justify-content:space-around; flex-wrap:wrap; text-align:center;}
+    .route{ text-align:center; margin:20px auto; }
+    .route svg{ width:100%; height:auto; background:#eaf6ff; border-radius:6px; }
+    .label{ font-size:12px; text-anchor:middle; }
+    table{width:100%;border-collapse:collapse;background:#fff;border-radius:6px;
+      overflow:hidden;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+    th,td{padding:8px;border-bottom:1px solid #ddd;font-size:14px;} 
+    th{background:#34495e;color:#fff;text-align:left;}
+    tr:hover{background:#f9f9f9;}
+    select,input{font-size:14px;padding:3px;width:100%;box-sizing:border-box;}
+    input[type="time"]{min-width:80px;}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Ngong Ping Cable Car – Maintenance Dashboard</h1>
+    <p>Date: <span id="date"></span></p>
+  </header>
+
+  <div class="dashboard">
+    <div class="summary">
+      <div>Total<br><span id="total">0</span></div>
+      <div style="color:#27ae60;">✅ Completed<br><span id="completed">0</span></div>
+      <div style="color:#e74c3c;">❗ Ongoing<br><span id="ongoing">0</span></div>
+      <div style="color:#7f8c8d;">⚪ No Work<br><span id="noschedule">0</span></div>
+    </div>
+
+    <!-- Route schematic -->
+    <div class="route">
+      <svg viewBox="0 0 1100 400" xmlns="http://www.w3.org/2000/svg">
+        <!-- Mountain polygon with flatter slope -->
+        <polygon points="
+          420,400
+          420,360
+          480,280 610,230 740,200 
+          790,180 840,185 
+          970,210 1050,220
+          1050,400"
+          fill="#9acd32" opacity="0.8"/>
+
+        <!-- Sea -->
+        <polygon points="100,400 100,360 180,360 180,400" fill="#87cefa" opacity="0.6"/> <!-- T1–T2A -->
+        <polygon points="280,400 280,360 420,360 420,400" fill="#87cefa" opacity="0.6"/> <!-- T2B–420 sea -->
+
+        <!-- Land bases -->
+        <polygon points="50,400 50,360 100,360 100,400" fill="#9acd32" opacity="0.8"/> <!-- TC–T1 -->
+        <polygon points="180,400 180,360 280,360 280,400" fill="#9acd32" opacity="0.8"/> <!-- T2A–T2B -->
+
+        <!-- Cable line (T2B→T3 straight) -->
+        <polyline points="
+          50,360 100,360 180,360 230,360 280,360
+          480,280 610,230 740,200 790,180 840,185
+          970,210 1050,220"
+          stroke="#2c3e50" stroke-width="2" fill="none"/>
+
+        <!-- Circles & Labels -->
+        <circle id="TCT" cx="50" cy="360" r="12"/><text x="50" y="385" class="label">Tung Chung</text>
+        <circle id="T1" cx="100" cy="360" r="8"/><text x="100" y="380" class="label">T1</text>
+        <circle id="T2A" cx="180" cy="360" r="8"/><text x="180" y="380" class="label">T2A</text>
+        <circle id="AIA" cx="230" cy="360" r="12"/><text x="230" y="385" class="label">Airport Isl. Stn</text>
+        <circle id="T2B" cx="280" cy="360" r="8"/><text x="280" y="380" class="label">T2B</text>
+        <circle id="T3" cx="480" cy="280" r="8"/><text x="480" y="300" class="label">T3</text>
+        <circle id="T4" cx="610" cy="230" r="8"/><text x="610" y="250" class="label">T4</text>
+        <circle id="T5" cx="740" cy="200" r="8"/><text x="740" y="220" class="label">T5</text>
+        <circle id="NLS" cx="790" cy="180" r="12"/><text x="790" y="200" class="label">Nei Lak Shan</text>
+        <circle id="T6" cx="840" cy="185" r="8"/><text x="840" y="205" class="label">T6</text>
+        <circle id="T7" cx="970" cy="210" r="8"/><text x="970" y="230" class="label">T7</text>
+        <circle id="NPT" cx="1050" cy="220" r="12"/><text x="1050" y="245" class="label">Ngong Ping</text>
+      </svg>
+    </div>
+
+    <!-- Maintenance Table -->
+    <table id="log">
+      <thead><tr><th>Location</th><th>Status</th><th>Team</th><th>Notes</th><th>Time</th></tr></thead>
+      <tbody>
+        <tr data-id="TCT"><td>Tung Chung Terminal</td>
+          <td><select><option>✅ Completed</option><option selected>❗ Ongoing</option><option>⚪ No Work</option></select></td>
+          <td><input></td><td><input></td><td><input type="time"></td></tr>
+        <tr data-id="T1"><td>Tower 1</td>
+          <td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td>
+          <td><input></td><td><input></td><td><input type="time"></td></tr>
+        <tr data-id="T2A"><td>Tower 2A</td>
+          <td><select><option>✅ Completed</option><option selected>❗ Ongoing</option><option>⚪ No Work</option></select></td>
+          <td><input></td><td><input></td><td><input type="time"></td></tr>
+        <tr data-id="AIA"><td>Airport Island Station</td>
+          <td><select><option selected>✅ Completed</option><option>❗ Ongoing</option><option>⚪ No Work</option></select></td>
+          <td><input></td><td><input></td><td><input type="time"></td></tr>
+        <tr data-id="T2B"><td>Tower 2B</td>
+          <td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td>
+          <td><input></td><td><input></td><td><input type="time"></td></tr>
+        <tr data-id="T3"><td>Tower 3</td>
+          <td><select><option>✅ Completed</option><option selected>❗ Ongoing</option><option>⚪ No Work</option></select></td>
+          <td><input></td><td><input></td><td><input type="time"></td></tr>
+        <tr data-id="T4"><td>Tower 4</td>
+          <td><select><option selected>✅ Completed</option><option>❗ Ongoing</option><option>⚪ No Work</option></select></td>
+          <td><input></td><td><input></td><td><input type="time"></td></tr>
+        <tr data-id="T5"><td>Tower 5</td>
+          <td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td>
+          <td><input></td><td><input></td><td><input type="time"></td></tr>
+        <tr data-id="NLS"><td>Nei Lak Shan Station</td>
+          <td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td>
+          <td><input></td><td><input></td><td><input type="time"></td></tr>
+        <tr data-id="T6"><td>Tower 6</td>
+          <td><select><option>✅ Completed</option><option selected>❗ Ongoing</option><option>⚪ No Work</option></select></td>
+          <td><input></td><td><input></td><td><input type="time"></td></tr>
+        <tr data-id="T7"><td>Tower 7</td>
+          <td><select><option selected>✅ Completed</option><option>❗ Ongoing</option><option>⚪ No Work</option></select></td>
+          <td><input></td><td><input></td><td><input type="time"></td></tr>
+        <tr data-id="NPT"><td>Ngong Ping Terminal</td>
+          <td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td>
+          <td><input></td><td><input></td><td><input type="time"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    document.getElementById("date").textContent = new Date().toLocaleDateString();
+    function updateDashboard(){
+      let total=0,done=0,ongoing=0,noWork=0;
+      document.querySelectorAll("#log tbody tr").forEach(row=>{
+        total++;
+        const val=row.querySelector("select").value;
+        const id=row.dataset.id, c=document.getElementById(id);
+        if(val.includes("✅")){done++; if(c) c.setAttribute("fill","#27ae60");}
+        else if(val.includes("❗")){ongoing++; if(c) c.setAttribute("fill","#e74c3c");}
+        else{noWork++; if(c) c.setAttribute("fill","#bdc3c7");}
+      });
+      document.getElementById("total").textContent=total;
+      document.getElementById("completed").textContent=done;
+      document.getElementById("ongoing").textContent=ongoing;
+      document.getElementById("noschedule").textContent=noWork;
+    }
+    document.querySelectorAll("#log select").forEach(s=>s.addEventListener("input",updateDashboard));
+    updateDashboard();
+  </script>
+</body>
+</html>
