@@ -13,16 +13,9 @@
     .route svg{ width:100%; height:auto; background:#eaf6ff; border-radius:6px; }
     .label{ font-size:12px; text-anchor:middle; }
     .duties-box {
-      position:absolute;
-      top:15px;
-      left:15px;
-      background:rgba(255,255,255,0.9);
-      border:1px solid #ccc;
-      padding:8px;
-      border-radius:6px;
-      font-size:13px;
-      line-height:1.6;
-      text-align:left;
+      position:absolute;top:15px;left:15px;
+      background:rgba(255,255,255,0.9);border:1px solid #ccc;padding:8px;border-radius:6px;
+      font-size:13px;line-height:1.6;
     }
     .duties-box div{display:flex;align-items:center;margin-bottom:4px;}
     .duties-box label{width:40px;font-weight:bold;}
@@ -32,8 +25,20 @@
     th,td{padding:8px;border-bottom:1px solid #ddd;font-size:14px;} 
     th{background:#34495e;color:#fff;text-align:left;}
     tr:hover{background:#f9f9f9;}
-    select,input[type="text"],input[type="time"]{font-size:14px;padding:3px;width:100%;box-sizing:border-box;}
-    input[type="time"]{min-width:80px;}
+    select{font-size:14px;padding:3px;width:100%;box-sizing:border-box;}
+    .team-entries { margin-bottom:6px; }
+    .entry { display:flex; gap:4px; margin-bottom:4px; align-items:center;}
+    .entry input { flex:1; padding:3px; font-size:13px; }
+    .entry input[type="time"] { flex:0 0 100px; }
+    .entry button {
+      font-size:12px;
+      padding:2px 6px;
+      cursor:pointer;
+      border:1px solid #aaa;
+      background:#f0f0f0;
+      border-radius:3px;
+    }
+    .entry button:hover { background:#ddd; }
     .export-btn{margin:10px 0;padding:8px 14px;font-size:14px;
       background:#2c3e50;color:#fff;border:none;border-radius:5px;cursor:pointer;}
     .export-btn:hover{background:#1a242f;}
@@ -63,30 +68,19 @@
       </div>
       <svg viewBox="0 0 1100 400" xmlns="http://www.w3.org/2000/svg">
         <!-- Mountain polygon -->
-        <polygon points="
-          420,400
-          420,360
-          480,280 610,230 740,200 
-          790,180 840,185 
-          970,210 1050,220
-          1050,400"
+        <polygon points="420,400 420,360 480,280 610,230 740,200 
+          790,180 840,185 970,210 1050,220 1050,400"
           fill="#9acd32" opacity="0.8"/>
-
         <!-- Sea -->
         <polygon points="100,400 100,360 180,360 180,400" fill="#87cefa" opacity="0.6"/>
         <polygon points="280,400 280,360 420,360 420,400" fill="#87cefa" opacity="0.6"/>
-
         <!-- Land bases -->
         <polygon points="50,400 50,360 100,360 100,400" fill="#9acd32" opacity="0.8"/>
         <polygon points="180,400 180,360 280,360 280,400" fill="#9acd32" opacity="0.8"/>
-
         <!-- Cable line -->
-        <polyline points="
-          50,360 100,360 180,360 230,360 280,360
-          480,280 610,230 740,200 790,180 840,185
-          970,210 1050,220"
+        <polyline points="50,360 100,360 180,360 230,360 280,360
+          480,280 610,230 740,200 790,180 840,185 970,210 1050,220"
           stroke="#2c3e50" stroke-width="2" fill="none"/>
-
         <!-- Stations -->
         <circle id="TCT" cx="50" cy="360" r="12"/><text x="50" y="385" class="label">Tung Chung</text>
         <circle id="T1" cx="100" cy="360" r="8"/><text x="100" y="380" class="label">T1</text>
@@ -108,44 +102,78 @@
 
     <!-- Maintenance Log -->
     <table id="log">
-      <thead><tr><th>Location</th><th>Status</th><th>Team</th><th>Notes</th><th>Time</th></tr></thead>
+      <thead>
+        <tr><th>Location</th><th>Status</th><th>Teams / Notes / Time</th></tr>
+      </thead>
       <tbody>
-        <tr data-id="TCT"><td>Tung Chung Terminal</td>
-          <td><select><option>✅ Completed</option><option selected>❗ Ongoing</option><option>⚪ No Work</option></select></td>
-          <td><input></td><td><input></td><td><input type="time"></td></tr>
+        <!-- Example row (repeat for each tower/station) -->
+        <tr data-id="TCT">
+          <td>Tung Chung Terminal</td>
+          <td>
+            <select>
+              <option>✅ Completed</option>
+              <option selected>❗ Ongoing</option>
+              <option>⚪ No Work</option>
+            </select>
+          </td>
+          <td>
+            <div class="team-entries">
+              <div class="entry">
+                <input placeholder="Team">
+                <input placeholder="Notes">
+                <input type="time">
+                <button class="add-entry">＋</button>
+                <button class="remove-entry">–</button>
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Duplicate same format for T1 to NPT -->
         <tr data-id="T1"><td>Tower 1</td>
           <td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td>
-          <td><input></td><td><input></td><td><input type="time"></td></tr>
+          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
+        </tr>
         <tr data-id="T2A"><td>Tower 2A</td>
           <td><select><option>✅ Completed</option><option selected>❗ Ongoing</option><option>⚪ No Work</option></select></td>
-          <td><input></td><td><input></td><td><input type="time"></td></tr>
+          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
+        </tr>
         <tr data-id="AIA"><td>Airport Island Station</td>
           <td><select><option selected>✅ Completed</option><option>❗ Ongoing</option><option>⚪ No Work</option></select></td>
-          <td><input></td><td><input></td><td><input type="time"></td></tr>
+          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
+        </tr>
         <tr data-id="T2B"><td>Tower 2B</td>
           <td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td>
-          <td><input></td><td><input></td><td><input type="time"></td></tr>
+          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
+        </tr>
         <tr data-id="T3"><td>Tower 3</td>
           <td><select><option>✅ Completed</option><option selected>❗ Ongoing</option><option>⚪ No Work</option></select></td>
-          <td><input></td><td><input></td><td><input type="time"></td></tr>
+          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
+        </tr>
         <tr data-id="T4"><td>Tower 4</td>
           <td><select><option selected>✅ Completed</option><option>❗ Ongoing</option><option>⚪ No Work</option></select></td>
-          <td><input></td><td><input></td><td><input type="time"></td></tr>
+          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
+        </tr>
         <tr data-id="T5"><td>Tower 5</td>
           <td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td>
-          <td><input></td><td><input></td><td><input type="time"></td></tr>
+          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
+        </tr>
         <tr data-id="NLS"><td>Nei Lak Shan Station</td>
           <td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td>
-          <td><input></td><td><input></td><td><input type="time"></td></tr>
+          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
+        </tr>
         <tr data-id="T6"><td>Tower 6</td>
           <td><select><option>✅ Completed</option><option selected>❗ Ongoing</option><option>⚪ No Work</option></select></td>
-          <td><input></td><td><input></td><td><input type="time"></td></tr>
+          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
+        </tr>
         <tr data-id="T7"><td>Tower 7</td>
           <td><select><option selected>✅ Completed</option><option>❗ Ongoing</option><option>⚪ No Work</option></select></td>
-          <td><input></td><td><input></td><td><input type="time"></td></tr>
+          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
+        </tr>
         <tr data-id="NPT"><td>Ngong Ping Terminal</td>
           <td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td>
-          <td><input></td><td><input></td><td><input type="time"></td></tr>
+          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -153,7 +181,7 @@
   <script>
     document.getElementById("date").textContent = new Date().toLocaleDateString();
 
-    // Update circle colors
+    // Dashboard update
     function updateDashboard(){
       let total=0,done=0,ongoing=0,noWork=0;
       document.querySelectorAll("#log tbody tr").forEach(row=>{
@@ -172,41 +200,53 @@
     document.querySelectorAll("#log select").forEach(s=>s.addEventListener("input",updateDashboard));
     updateDashboard();
 
-    // Export to CSV with semicolon separator
+    // Add/remove team entry
+    document.addEventListener("click", e => {
+      if (e.target.classList.contains("add-entry")) {
+        const entry = e.target.closest(".entry");
+        const clone = entry.cloneNode(true);
+        clone.querySelectorAll("input").forEach(i => i.value="");
+        entry.parentNode.appendChild(clone);
+      }
+      if (e.target.classList.contains("remove-entry")) {
+        const entry = e.target.closest(".entry");
+        const container = entry.parentNode;
+        if (container.children.length > 1) {
+          entry.remove();
+        }
+      }
+    });
+
+    // CSV export
     function exportCSV(){
       let rows = [];
       const date = document.getElementById("date").textContent;
-
-      // Header for duty
       rows.push(["Date",date].join(";"));
       rows.push(["Duty Roster"].join(";"));
-
       document.querySelectorAll("#duties div").forEach(div=>{
-        const label = div.querySelector("label").textContent.trim();
-        const val = div.querySelector("input").value.trim();
+        const label=div.querySelector("label").textContent.trim();
+        const val=div.querySelector("input").value.trim();
         rows.push([label,val].join(";"));
       });
-
-      rows.push(""); // empty line
+      rows.push("");
       rows.push(["Location","Status","Team","Notes","Time"].join(";"));
-
-      // Maintenance log
       document.querySelectorAll("#log tbody tr").forEach(row=>{
-        const cells = [
-          row.querySelector("td").textContent.trim(),
-          row.querySelector("select").value,
-          row.querySelectorAll("input")[0].value,
-          row.querySelectorAll("input")[1].value,
-          row.querySelectorAll("input")[2].value
-        ];
-        rows.push(cells.join(";"));
+        const location=row.querySelector("td").textContent.trim();
+        const status=row.querySelector("select").value;
+        const entries=row.querySelectorAll(".entry");
+        entries.forEach(ent=>{
+          const team=ent.querySelectorAll("input")[0].value;
+          const note=ent.querySelectorAll("input")[1].value;
+          const time=ent.querySelectorAll("input")[2].value;
+          rows.push([location,status,team,note,time].join(";"));
+        });
       });
-
-      const csvContent = rows.join("\n");
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "maintenance_log.csv";
+      const csvContent=rows.join("\n");
+      const blob=new Blob([csvContent],{type:"text/csv;charset=utf-8;"});
+      const link=document.createElement("a");
+      const today=new Date().toISOString().slice(0,10);
+      link.href=URL.createObjectURL(blob);
+      link.download="ngongping360_log_"+today+".csv";
       link.click();
     }
   </script>
