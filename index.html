@@ -48,6 +48,7 @@
   </header>
 
   <div class="dashboard">
+    <!-- Summary -->
     <div class="summary">
       <div>Total<br><span id="total">0</span></div>
       <div style="color:#27ae60;">✅ Completed<br><span id="completed">0</span></div>
@@ -57,6 +58,7 @@
 
     <!-- Map schematic -->
     <div class="route">
+      <!-- Duty Roster Input -->
       <div class="duties-box" id="duties">
         <div><label>DCP</label><input></div>
         <div><label>DMS</label><input></div>
@@ -65,11 +67,20 @@
       </div>
 
       <svg viewBox="0 0 1100 420" xmlns="http://www.w3.org/2000/svg">
+        <!-- SEA -->
+        <polygon points="100,420 100,360 180,360 180,420" fill="#87cefa" opacity="0.6"/>
+        <polygon points="280,420 280,360 420,360 420,420" fill="#87cefa" opacity="0.6"/>
+        <!-- MOUNTAIN -->
+        <polygon points="50,420 50,360 100,360 100,420" fill="#9acd32" opacity="0.8"/>
+        <polygon points="180,420 180,360 280,360 280,420" fill="#9acd32" opacity="0.8"/>
+        <polygon points="420,420 420,360 480,280 610,230 740,200 
+                         790,180 840,185 970,210 1050,220 1050,420"
+                         fill="#9acd32" opacity="0.8"/>
+        <!-- Cable line -->
         <polyline points="50,360 100,360 180,360 230,360 280,360
-          480,280 610,230 740,200 790,180 840,185 970,210 1050,220"
-          stroke="#2c3e50" stroke-width="2" fill="none"/>
-        
-        <!-- Terminals + Towers -->
+                          480,280 610,230 740,200 790,180 840,185 970,210 1050,220"
+                          stroke="#2c3e50" stroke-width="2" fill="none"/>
+        <!-- Stations -->
         <circle id="TCT" cx="50" cy="360" r="12"/><text x="50" y="385" class="label">TCT</text><image id="worker-TCT" href="worker.png" x="20" y="300" width="60" height="60" class="worker"/>
         <circle id="T1" cx="100" cy="360" r="8"/><text x="100" y="380" class="label">T1</text><image id="worker-T1" href="worker.png" x="70" y="300" width="60" height="60" class="worker"/>
         <circle id="T2A" cx="180" cy="360" r="8"/><text x="180" y="380" class="label">T2A</text><image id="worker-T2A" href="worker.png" x="150" y="300" width="60" height="60" class="worker"/>
@@ -87,9 +98,11 @@
 
     <button class="export-btn" onclick="exportCSV()">⬇ Export CSV</button>
 
+    <!-- Maintenance Log -->
     <table id="log">
       <thead><tr><th>Location</th><th>Status</th><th>Teams / Notes / Time</th></tr></thead>
       <tbody>
+        <!-- All stations rows -->
         <tr data-id="TCT"><td>Tung Chung Terminal</td><td><select><option>✅ Completed</option><option selected>❗ Ongoing</option><option>⚪ No Work</option></select></td><td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td></tr>
         <tr data-id="T1"><td>Tower 1</td><td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td><td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td></tr>
         <tr data-id="T2A"><td>Tower 2A</td><td><select><option>✅ Completed</option><option selected>❗ Ongoing</option><option>⚪ No Work</option></select></td><td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td></tr>
@@ -108,7 +121,6 @@
 
   <script>
     document.getElementById("date").textContent = new Date().toLocaleDateString();
-
     function updateDashboard(){
       let total=0,done=0,ongoing=0,noWork=0;
       document.querySelectorAll("#log tbody tr").forEach(row=>{
