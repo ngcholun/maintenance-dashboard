@@ -11,7 +11,7 @@
       display:flex; justify-content:space-around; flex-wrap:wrap; text-align:center;}
     .route{ text-align:center; margin:20px auto; position:relative; }
     .route svg{ width:100%; height:auto; background:#eaf6ff; border-radius:6px; }
-    .label{ font-size:12px; text-anchor:middle; }
+    .label{ font-size:18px; font-weight:bold; text-anchor:middle; }
     .duties-box {
       position:absolute;top:15px;left:15px;
       background:rgba(255,255,255,0.9);border:1px solid #ccc;padding:8px;border-radius:6px;
@@ -31,17 +31,14 @@
     .entry input { flex:1; padding:3px; font-size:13px; }
     .entry input[type="time"] { flex:0 0 100px; }
     .entry button {
-      font-size:12px;
-      padding:2px 6px;
-      cursor:pointer;
-      border:1px solid #aaa;
-      background:#f0f0f0;
-      border-radius:3px;
+      font-size:12px; padding:2px 6px; cursor:pointer;
+      border:1px solid #aaa; background:#f0f0f0; border-radius:3px;
     }
     .entry button:hover { background:#ddd; }
     .export-btn{margin:10px 0;padding:8px 14px;font-size:14px;
       background:#2c3e50;color:#fff;border:none;border-radius:5px;cursor:pointer;}
     .export-btn:hover{background:#1a242f;}
+    .worker { display:none; pointer-events:none; }
   </style>
 </head>
 <body>
@@ -58,7 +55,7 @@
       <div style="color:#7f8c8d;">⚪ No Work<br><span id="noschedule">0</span></div>
     </div>
 
-    <!-- Route schematic with duty roster -->
+    <!-- Map schematic -->
     <div class="route">
       <div class="duties-box" id="duties">
         <div><label>DCP</label><input></div>
@@ -66,114 +63,45 @@
         <div><label>DM</label><input></div>
         <div><label>DC</label><input></div>
       </div>
-      <svg viewBox="0 0 1100 400" xmlns="http://www.w3.org/2000/svg">
-        <!-- Mountain polygon -->
-        <polygon points="420,400 420,360 480,280 610,230 740,200 
-          790,180 840,185 970,210 1050,220 1050,400"
-          fill="#9acd32" opacity="0.8"/>
-        <!-- Sea -->
-        <polygon points="100,400 100,360 180,360 180,400" fill="#87cefa" opacity="0.6"/>
-        <polygon points="280,400 280,360 420,360 420,400" fill="#87cefa" opacity="0.6"/>
-        <!-- Land bases -->
-        <polygon points="50,400 50,360 100,360 100,400" fill="#9acd32" opacity="0.8"/>
-        <polygon points="180,400 180,360 280,360 280,400" fill="#9acd32" opacity="0.8"/>
-        <!-- Cable line -->
+
+      <svg viewBox="0 0 1100 420" xmlns="http://www.w3.org/2000/svg">
         <polyline points="50,360 100,360 180,360 230,360 280,360
           480,280 610,230 740,200 790,180 840,185 970,210 1050,220"
           stroke="#2c3e50" stroke-width="2" fill="none"/>
-        <!-- Stations -->
-        <circle id="TCT" cx="50" cy="360" r="12"/><text x="50" y="385" class="label">Tung Chung</text>
-        <circle id="T1" cx="100" cy="360" r="8"/><text x="100" y="380" class="label">T1</text>
-        <circle id="T2A" cx="180" cy="360" r="8"/><text x="180" y="380" class="label">T2A</text>
-        <circle id="AIA" cx="230" cy="360" r="12"/><text x="230" y="385" class="label">Airport Isl. Stn</text>
-        <circle id="T2B" cx="280" cy="360" r="8"/><text x="280" y="380" class="label">T2B</text>
-        <circle id="T3" cx="480" cy="280" r="8"/><text x="480" y="300" class="label">T3</text>
-        <circle id="T4" cx="610" cy="230" r="8"/><text x="610" y="250" class="label">T4</text>
-        <circle id="T5" cx="740" cy="200" r="8"/><text x="740" y="220" class="label">T5</text>
-        <circle id="NLS" cx="790" cy="180" r="12"/><text x="790" y="200" class="label">Nei Lak Shan</text>
-        <circle id="T6" cx="840" cy="185" r="8"/><text x="840" y="205" class="label">T6</text>
-        <circle id="T7" cx="970" cy="210" r="8"/><text x="970" y="230" class="label">T7</text>
-        <circle id="NPT" cx="1050" cy="220" r="12"/><text x="1050" y="245" class="label">Ngong Ping</text>
+        
+        <!-- Terminals + Towers -->
+        <circle id="TCT" cx="50" cy="360" r="12"/><text x="50" y="385" class="label">TCT</text><image id="worker-TCT" href="worker.png" x="20" y="300" width="60" height="60" class="worker"/>
+        <circle id="T1" cx="100" cy="360" r="8"/><text x="100" y="380" class="label">T1</text><image id="worker-T1" href="worker.png" x="70" y="300" width="60" height="60" class="worker"/>
+        <circle id="T2A" cx="180" cy="360" r="8"/><text x="180" y="380" class="label">T2A</text><image id="worker-T2A" href="worker.png" x="150" y="300" width="60" height="60" class="worker"/>
+        <circle id="AIA" cx="230" cy="360" r="12"/><text x="230" y="385" class="label">AIA</text><image id="worker-AIA" href="worker.png" x="200" y="300" width="60" height="60" class="worker"/>
+        <circle id="T2B" cx="280" cy="360" r="8"/><text x="280" y="380" class="label">T2B</text><image id="worker-T2B" href="worker.png" x="250" y="300" width="60" height="60" class="worker"/>
+        <circle id="T3" cx="480" cy="280" r="8"/><text x="480" y="300" class="label">T3</text><image id="worker-T3" href="worker.png" x="450" y="220" width="60" height="60" class="worker"/>
+        <circle id="T4" cx="610" cy="230" r="8"/><text x="610" y="250" class="label">T4</text><image id="worker-T4" href="worker.png" x="580" y="170" width="60" height="60" class="worker"/>
+        <circle id="T5" cx="740" cy="200" r="8"/><text x="740" y="220" class="label">T5</text><image id="worker-T5" href="worker.png" x="710" y="140" width="60" height="60" class="worker"/>
+        <circle id="NLS" cx="790" cy="180" r="12"/><text x="790" y="200" class="label">NLS</text><image id="worker-NLS" href="worker.png" x="760" y="120" width="60" height="60" class="worker"/>
+        <circle id="T6" cx="840" cy="185" r="8"/><text x="840" y="205" class="label">T6</text><image id="worker-T6" href="worker.png" x="810" y="125" width="60" height="60" class="worker"/>
+        <circle id="T7" cx="970" cy="210" r="8"/><text x="970" y="230" class="label">T7</text><image id="worker-T7" href="worker.png" x="940" y="150" width="60" height="60" class="worker"/>
+        <circle id="NPT" cx="1050" cy="220" r="12"/><text x="1050" y="245" class="label">NPT</text><image id="worker-NPT" href="worker.png" x="1020" y="160" width="60" height="60" class="worker"/>
       </svg>
     </div>
 
-    <!-- Export button -->
     <button class="export-btn" onclick="exportCSV()">⬇ Export CSV</button>
 
-    <!-- Maintenance Log -->
     <table id="log">
-      <thead>
-        <tr><th>Location</th><th>Status</th><th>Teams / Notes / Time</th></tr>
-      </thead>
+      <thead><tr><th>Location</th><th>Status</th><th>Teams / Notes / Time</th></tr></thead>
       <tbody>
-        <!-- Example row (repeat for each tower/station) -->
-        <tr data-id="TCT">
-          <td>Tung Chung Terminal</td>
-          <td>
-            <select>
-              <option>✅ Completed</option>
-              <option selected>❗ Ongoing</option>
-              <option>⚪ No Work</option>
-            </select>
-          </td>
-          <td>
-            <div class="team-entries">
-              <div class="entry">
-                <input placeholder="Team">
-                <input placeholder="Notes">
-                <input type="time">
-                <button class="add-entry">＋</button>
-                <button class="remove-entry">–</button>
-              </div>
-            </div>
-          </td>
-        </tr>
-
-        <!-- Duplicate same format for T1 to NPT -->
-        <tr data-id="T1"><td>Tower 1</td>
-          <td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td>
-          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
-        </tr>
-        <tr data-id="T2A"><td>Tower 2A</td>
-          <td><select><option>✅ Completed</option><option selected>❗ Ongoing</option><option>⚪ No Work</option></select></td>
-          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
-        </tr>
-        <tr data-id="AIA"><td>Airport Island Station</td>
-          <td><select><option selected>✅ Completed</option><option>❗ Ongoing</option><option>⚪ No Work</option></select></td>
-          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
-        </tr>
-        <tr data-id="T2B"><td>Tower 2B</td>
-          <td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td>
-          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
-        </tr>
-        <tr data-id="T3"><td>Tower 3</td>
-          <td><select><option>✅ Completed</option><option selected>❗ Ongoing</option><option>⚪ No Work</option></select></td>
-          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
-        </tr>
-        <tr data-id="T4"><td>Tower 4</td>
-          <td><select><option selected>✅ Completed</option><option>❗ Ongoing</option><option>⚪ No Work</option></select></td>
-          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
-        </tr>
-        <tr data-id="T5"><td>Tower 5</td>
-          <td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td>
-          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
-        </tr>
-        <tr data-id="NLS"><td>Nei Lak Shan Station</td>
-          <td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td>
-          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
-        </tr>
-        <tr data-id="T6"><td>Tower 6</td>
-          <td><select><option>✅ Completed</option><option selected>❗ Ongoing</option><option>⚪ No Work</option></select></td>
-          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
-        </tr>
-        <tr data-id="T7"><td>Tower 7</td>
-          <td><select><option selected>✅ Completed</option><option>❗ Ongoing</option><option>⚪ No Work</option></select></td>
-          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
-        </tr>
-        <tr data-id="NPT"><td>Ngong Ping Terminal</td>
-          <td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td>
-          <td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td>
-        </tr>
+        <tr data-id="TCT"><td>Tung Chung Terminal</td><td><select><option>✅ Completed</option><option selected>❗ Ongoing</option><option>⚪ No Work</option></select></td><td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td></tr>
+        <tr data-id="T1"><td>Tower 1</td><td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td><td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td></tr>
+        <tr data-id="T2A"><td>Tower 2A</td><td><select><option>✅ Completed</option><option selected>❗ Ongoing</option><option>⚪ No Work</option></select></td><td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td></tr>
+        <tr data-id="AIA"><td>Airport Island Station</td><td><select><option selected>✅ Completed</option><option>❗ Ongoing</option><option>⚪ No Work</option></select></td><td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td></tr>
+        <tr data-id="T2B"><td>Tower 2B</td><td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td><td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td></tr>
+        <tr data-id="T3"><td>Tower 3</td><td><select><option>✅ Completed</option><option selected>❗ Ongoing</option><option>⚪ No Work</option></select></td><td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td></tr>
+        <tr data-id="T4"><td>Tower 4</td><td><select><option selected>✅ Completed</option><option>❗ Ongoing</option><option>⚪ No Work</option></select></td><td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td></tr>
+        <tr data-id="T5"><td>Tower 5</td><td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td><td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td></tr>
+        <tr data-id="NLS"><td>Nei Lak Shan Station</td><td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td><td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td></tr>
+        <tr data-id="T6"><td>Tower 6</td><td><select><option>✅ Completed</option><option selected>❗ Ongoing</option><option>⚪ No Work</option></select></td><td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td></tr>
+        <tr data-id="T7"><td>Tower 7</td><td><select><option selected>✅ Completed</option><option>❗ Ongoing</option><option>⚪ No Work</option></select></td><td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td></tr>
+        <tr data-id="NPT"><td>Ngong Ping Terminal</td><td><select><option>✅ Completed</option><option>❗ Ongoing</option><option selected>⚪ No Work</option></select></td><td><div class="team-entries"><div class="entry"><input placeholder="Team"><input placeholder="Notes"><input type="time"><button class="add-entry">＋</button><button class="remove-entry">–</button></div></div></td></tr>
       </tbody>
     </table>
   </div>
@@ -181,16 +109,23 @@
   <script>
     document.getElementById("date").textContent = new Date().toLocaleDateString();
 
-    // Dashboard update
     function updateDashboard(){
       let total=0,done=0,ongoing=0,noWork=0;
       document.querySelectorAll("#log tbody tr").forEach(row=>{
         total++;
         const val=row.querySelector("select").value;
-        const id=row.dataset.id, c=document.getElementById(id);
-        if(val.includes("✅")){done++; if(c) c.setAttribute("fill","#27ae60");}
-        else if(val.includes("❗")){ongoing++; if(c) c.setAttribute("fill","#e74c3c");}
-        else{noWork++; if(c) c.setAttribute("fill","#bdc3c7");}
+        const id=row.dataset.id;
+        const c=document.getElementById(id);
+        const w=document.getElementById("worker-"+id);
+        if(val.includes("✅")){
+          done++; if(c) c.setAttribute("fill","#27ae60"); if(w) w.style.display="none";
+        }
+        else if(val.includes("❗")){
+          ongoing++; if(c) c.setAttribute("fill","#e74c3c"); if(w) w.style.display="block";
+        }
+        else{
+          noWork++; if(c) c.setAttribute("fill","#bdc3c7"); if(w) w.style.display="none";
+        }
       });
       document.getElementById("total").textContent=total;
       document.getElementById("completed").textContent=done;
@@ -200,7 +135,6 @@
     document.querySelectorAll("#log select").forEach(s=>s.addEventListener("input",updateDashboard));
     updateDashboard();
 
-    // Add/remove team entry
     document.addEventListener("click", e => {
       if (e.target.classList.contains("add-entry")) {
         const entry = e.target.closest(".entry");
@@ -211,13 +145,10 @@
       if (e.target.classList.contains("remove-entry")) {
         const entry = e.target.closest(".entry");
         const container = entry.parentNode;
-        if (container.children.length > 1) {
-          entry.remove();
-        }
+        if (container.children.length > 1) entry.remove();
       }
     });
 
-    // CSV export
     function exportCSV(){
       let rows = [];
       const date = document.getElementById("date").textContent;
